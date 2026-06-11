@@ -1,0 +1,77 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+            - id: job-service
+              uri: http://localhost:8081
+              predicates:
+                - name: Path
+                  args:
+                    pattern: /api/v1/public/jobs/**
+                - name: Header
+                  args:
+                    header: X-Client-Type
+                    regex: Web
+#              filters:
+#                - name: RequestRateLimiter
+#                  args:
+#                    # Số lượng token được nạp lại vào giỏ trong 1 giây (Tốc độ trung bình)
+#                    redis-rate-limiter.replenishRate: 10
+#                    # Sức chứa tối đa của giỏ (Cho phép bùng nổ - Burst trong 1 giây tối đa bao nhiêu)
+#                    redis-rate-limiter.burstCapacity: 20
+#                    # Mỗi request tốn bao nhiêu token
+#                    redis-rate-limiter.requestedTokens: 1
+#                    # SpEL
+
+            - id: candidate-service
+              uri: http://localhost:8082
+              predicates:
+                - name: Path
+                  args:
+                    pattern: /api/v1/candidates/**
+                - name: Header
+                  args:
+                    header: X-Client-Type
+                    regex: Web
+            - id: application-service
+              uri: http://localhost:8083
+              predicates:
+                - name: Path
+                  args:
+                    pattern: /api/v1/applications/**
+                - name: Header
+                  args:
+                    header: X-Client-Type
+                    regex: Web
+            - id: notification-service
+              uri: http://localhost:8084
+              predicates:
+                - name: Path
+                  args:
+                    pattern: /api/v1/notifications/**
+                - name: Header
+                  args:
+                    header: X-Client-Type
+                    regex: Web
+            - id: cv-parser-service
+              uri: http://localhost:8085
+              predicates:
+                - name: Path
+                  args:
+                    pattern: /api/v1/cv-parse/**
+                - name: Header
+                  args:
+                    header: X-Client-Type
+                    regex: Web
+  management:
+    endpoints:
+      web:
+        exposure:
+          includes:
+            - health
+            - info
+            - gateway

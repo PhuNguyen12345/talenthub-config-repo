@@ -1,0 +1,20 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: candidate-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/talenthub_candidate_db
+    username: admin
+    password: Nguyenanphu2005@
+  jpa:
+    hibernate:
+      ddl-auto: validate    # dev only, prod đổi qua Flyway
+    properties:
+      hibernate:
+        format_sql: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
