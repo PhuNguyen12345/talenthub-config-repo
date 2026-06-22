@@ -11,7 +11,7 @@ spring:
               predicates:
                 - name: Path
                   args:
-                    pattern: /api/v1/public/jobs/**
+                    pattern: /api/v1/public/jobs/**,/api/v1/jobs/**
                 - name: Header
                   args:
                     header: X-Client-Type
